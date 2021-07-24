@@ -1,1 +1,35 @@
-<p>grafica1 works!</p>
+<div class="row">
+  <div class="col-6">
+    <app-donut
+      [title]="graph1Title"
+      [labels]="graph1ChartLabels"
+      [data]="graph1Data"
+      >
+    </app-donut>
+  </div>
+  <div class="col-6">
+    <app-donut
+      [title]="graph2Title"
+      [labels]="graph2ChartLabels"
+      [data]="graph2Data"
+      >
+    </app-donut>
+  </div>
+</div>
+<div class="row">
+  <div class="col-6">
+    <app-donut
+      [title]="graph3Title"
+      [data]="graph3Data"
+      >
+    </app-donut>
+  </div>
+  <div class="col-6">
+    <app-donut
+      [title]="graph4Title"
+      [labels]="graph4ChartLabels"
+      [data]="graph4Data"
+      >
+    </app-donut>
+  </div>
+</div>

@@ -1,1 +1,53 @@
-<p>progress works!</p>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Striped Progress bar</h4>
+        <div class="progress m-t-20">
+          <div
+            class="progress-bar bg-primary progress-bar-striped active"
+            style="height: 10px"
+            role="progressbar"
+            [style.width]="getProgress1"
+          >
+          </div>
+        </div>
+        <div class="progress m-t-20">
+          <div
+            class="progress-bar bg-info progress-bar-striped active"
+            style="height: 10px"
+            [style.width]="getProgress2"
+            role="progressbar"
+          >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <app-adder
+          (outputValue)="progress1 = $event"
+          [progress]="progress1"
+        ></app-adder>
+        <!-- (outputValue)="adderChildVal($event)" -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <app-adder
+          (outputValue)="progress2 = $event"
+          [progress]="progress2"
+          [adderBtnClass]="'btn-info'"
+        ></app-adder>
+        <!-- mete la comilla simple por el '-' peta js -->
+      </div>
+    </div>
+  </div>
+</div>
