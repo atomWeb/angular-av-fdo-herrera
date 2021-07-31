@@ -5,6 +5,7 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Grafica1Component } from './grafica1/grafica1.component';
 import { PagesComponent } from './pages.component';
+import { ProfileComponent } from './profile/profile.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'account-settings', component: AccountSettingsComponent, data:{ title: 'Settings' }  },
       { path: 'promises', component: PromisesComponent, data:{ title: 'Promises' }  },
       { path: 'rxjs', component: RxjsComponent, data:{ title: 'RxJs' }  },
+      { path: 'profile', component: ProfileComponent, data:{ title: 'Profile' }  },
       // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     ],
   },

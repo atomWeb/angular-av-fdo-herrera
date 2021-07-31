@@ -6,6 +6,7 @@ import { tap, map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
+import { User } from '../models/user.model';
 
 const url_base = environment.url_base;
 declare const gapi: any;
@@ -15,6 +16,7 @@ declare const gapi: any;
 })
 export class UserService {
   public auth2: any;
+  public user!: User;
 
   constructor(
     private http: HttpClient,
@@ -24,12 +26,32 @@ export class UserService {
     this.googleInit();
   }
 
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
+
+  get uid(): string {
+    return this.user.uid || '';
+  }
+
   createUser(formData: RegisterForm) {
     return this.http.post(`${url_base}/users`, formData).pipe(
       tap((resp: any) => {
         localStorage.setItem('token', resp.data); // Ojo resp.token
       })
     );
+  }
+
+  profileUpdate(data: { usename: string; email: string, role: string }) {
+    data = {
+      ...data,
+      role: this.user.role!
+    }
+    return this.http.put(`${url_base}/users/${this.uid}`, data, {
+      headers: {
+        'x-token': this.token,
+      },
+    });
   }
 
   login(formData: LoginForm) {
@@ -51,18 +73,19 @@ export class UserService {
   }
 
   validateToken(): Observable<boolean> {
-    const token = localStorage.getItem('token') || '';
     return this.http
       .get(`${url_base}/login/renew`, {
         headers: {
-          'x-token': token,
+          'x-token': this.token,
         },
       })
       .pipe(
-        tap((resp: any) => {
+        map((resp: any) => {
+          const { email, google, role, uid, username, image = '' } = resp.user;
+          this.user = new User(username, email, '', image, google, role, uid);
           localStorage.setItem('token', resp.data); // Ojo en el data esta el token
+          return true;
         }),
-        map((resp) => true),
         catchError((error) => of(false)) // Cualquiere error devuelve un false como observable
       );
   }
