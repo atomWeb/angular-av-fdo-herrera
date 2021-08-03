@@ -6,6 +6,7 @@ import { tap, map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { LoginForm } from '../interfaces/login-form.interface';
+import { LoadUser } from '../interfaces/load-users.interface';
 import { User } from '../models/user.model';
 
 const url_base = environment.url_base;
@@ -34,6 +35,14 @@ export class UserService {
     return this.user.uid || '';
   }
 
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token,
+      },
+    };
+  }
+
   createUser(formData: RegisterForm) {
     return this.http.post(`${url_base}/users`, formData).pipe(
       tap((resp: any) => {
@@ -42,16 +51,12 @@ export class UserService {
     );
   }
 
-  profileUpdate(data: { usename: string; email: string, role: string }) {
+  profileUpdate(data: { usename: string; email: string; role: string }) {
     data = {
       ...data,
-      role: this.user.role!
-    }
-    return this.http.put(`${url_base}/users/${this.uid}`, data, {
-      headers: {
-        'x-token': this.token,
-      },
-    });
+      role: this.user.role!,
+    };
+    return this.http.put(`${url_base}/users/${this.uid}`, data, this.headers);
   }
 
   login(formData: LoginForm) {
@@ -111,5 +116,39 @@ export class UserService {
         resolve();
       });
     });
+  }
+
+  loadUsers(tokenpag: number = 0) {
+    const url = `${url_base}/users?tokenpag=${tokenpag}`;
+    return this.http.get<LoadUser>(url, this.headers).pipe(
+      map((resp) => {
+        // console.log(resp);
+        const users = resp.users.map(
+          (user) =>
+            new User(
+              user.username,
+              user.email,
+              '',
+              user.image,
+              user.google,
+              user.role,
+              user.uid
+            )
+        );
+        return {
+          total: resp.total,
+          users,
+        };
+      })
+    );
+  }
+
+  deleteUser(uid: string) {
+    const url = `${url_base}/users/${uid}`;
+    return this.http.delete(url, this.headers);
+  }
+
+  updateUser(user: User) {
+    return this.http.put(`${url_base}/users/${user.uid}`, user, this.headers);
   }
 }

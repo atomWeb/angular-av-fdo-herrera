@@ -8,15 +8,7 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styles: [
-    `
-      .img-avatar {
-        width: 200px;
-        height: 200px;
-        padding: 15px;
-      }
-    `,
-  ],
+  styles: [],
 })
 export class ProfileComponent implements OnInit {
   public profileForm!: FormGroup;
