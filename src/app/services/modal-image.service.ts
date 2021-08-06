@@ -19,12 +19,11 @@ export class ModalImageService {
 
   openModal(
     type: 'users' | 'doctors' | 'hospitals',
-    id: string,
+    id?: string,
     image: string = 'no-image'
   ) {
-
     this.type = type;
-    this.id = id;
+    this.id = id || '';
 
     if (image.includes('https')) {
       this.image = image;
@@ -33,7 +32,6 @@ export class ModalImageService {
     }
 
     this._hideModal = false;
-
   }
 
   closeModal() {

@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user.model';
+import { Hospital } from '../models/hospital.model';
+import { Doctor } from '../models/doctor.model';
 
 const url_base = environment.url_base;
 
@@ -39,6 +41,18 @@ export class SearchesService {
     );
   }
 
+  private setHospitalInstance(data: any[]): Hospital[] {
+    return data.map(
+      (hospital) => new Hospital(hospital.name, hospital._id, hospital.image)
+    );
+  }
+
+  private setDoctorInstance(data: any[]): Doctor[] {
+    return data.map(
+      (doctor) => new Doctor(doctor.name, doctor._id, doctor.image)
+    );
+  }
+
   finder(type: 'users' | 'doctors' | 'hospitals', term: string = '') {
     const url = `${url_base}/all/collection/${type}/${term}`;
     return this.http.get<any[]>(url, this.headers).pipe(
@@ -46,6 +60,13 @@ export class SearchesService {
         switch (type) {
           case 'users':
             return this.setUserInstance(resp.data);
+
+          case 'hospitals':
+            return this.setHospitalInstance(resp.data);
+
+          case 'doctors':
+            return this.setDoctorInstance(resp.data);
+
           default:
             return [];
         }
