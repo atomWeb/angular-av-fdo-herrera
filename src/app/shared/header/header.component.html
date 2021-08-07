@@ -81,9 +81,10 @@
             href="javascript:void(0)"
             ><i class="ti-search"></i
           ></a>
-          <form class="app-search">
+          <form class="app-search" (submit)="findAll(txtTerm.value)">
             <input
               type="text"
+              #txtTerm
               class="form-control"
               placeholder="Search & enter"
             />
@@ -374,7 +375,7 @@
               </li>
               <li role="separator" class="divider"></li>
               <li>
-                <a (click)="logout()" class="btnCursor"><i class="fa fa-power-off"></i> Logout</a>
+                <a (click)="logout()" class="cursor"><i class="fa fa-power-off"></i> Logout</a>
               </li>
             </ul>
           </div>

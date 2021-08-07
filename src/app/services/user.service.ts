@@ -31,6 +31,10 @@ export class UserService {
     return localStorage.getItem('token') || '';
   }
 
+  get role(): string {
+    return this.user.role || '';
+  }
+
   get uid(): string {
     return this.user.uid || '';
   }
@@ -43,10 +47,15 @@ export class UserService {
     };
   }
 
+  setLocalStorageData(token: string, menu: any) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu));
+  }
+
   createUser(formData: RegisterForm) {
     return this.http.post(`${url_base}/users`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.data); // Ojo resp.token
+        this.setLocalStorageData(resp.data, resp.menu); // Ojo resp.data = resp.token
       })
     );
   }
@@ -63,7 +72,7 @@ export class UserService {
     // console.log(formData);
     return this.http.post(`${url_base}/login`, formData).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.data); // Ojo resp.token
+        this.setLocalStorageData(resp.data, resp.menu); // Ojo resp.data = resp.token
       })
     );
   }
@@ -72,7 +81,7 @@ export class UserService {
     // console.log(formData);
     return this.http.post(`${url_base}/login/google`, { token }).pipe(
       tap((resp: any) => {
-        localStorage.setItem('token', resp.data); // Ojo resp.token
+        this.setLocalStorageData(resp.data, resp.menu); // Ojo resp.data = resp.token
       })
     );
   }
@@ -88,7 +97,7 @@ export class UserService {
         map((resp: any) => {
           const { email, google, role, uid, username, image = '' } = resp.user;
           this.user = new User(username, email, '', image, google, role, uid);
-          localStorage.setItem('token', resp.data); // Ojo en el data esta el token
+          this.setLocalStorageData(resp.data, resp.menu); // Ojo resp.data = resp.token
           return true;
         }),
         catchError((error) => of(false)) // Cualquiere error devuelve un false como observable
@@ -97,6 +106,7 @@ export class UserService {
 
   logOut() {
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
     this.auth2.signOut().then(() => {
       this.ngZone.run(() => {
         this.router.navigateByUrl('/login');

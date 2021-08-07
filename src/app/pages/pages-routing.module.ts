@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
+import { AdminGuard } from '../guards/admin.guard';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -13,6 +14,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ProgressComponent } from './progress/progress.component';
 import { PromisesComponent } from './promises/promises.component';
 import { DoctorComponent } from './maintenance/doctors/doctor.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   {
@@ -21,16 +23,19 @@ const routes: Routes = [
     children: [
       { path: '', component: DashboardComponent, data:{ title: 'DashBoard' } },
       { path: 'progress', component: ProgressComponent, data:{ title: 'ProgressBar' }  },
+      { path: 'search/:term', component: SearchComponent, data:{ title: 'Searches' }  },
       { path: 'grafica1', component: Grafica1Component, data:{ title: 'Graph #1' }  },
       { path: 'account-settings', component: AccountSettingsComponent, data:{ title: 'Settings' }  },
       { path: 'promises', component: PromisesComponent, data:{ title: 'Promises' }  },
       { path: 'rxjs', component: RxjsComponent, data:{ title: 'RxJs' }  },
       { path: 'profile', component: ProfileComponent, data:{ title: 'Profile' }  },
-      { path: 'users', component: UsersComponent, data:{ title: 'Users App maintenance' }  },
       { path: 'hospitals', component: HospitalsComponent, data:{ title: 'Hospitals App maintenance' }  },
       { path: 'doctors', component: DoctorsComponent, data:{ title: 'Doctors App maintenance' }  },
       { path: 'doctors/:id', component: DoctorComponent, data:{ title: 'Doctor App maintenance' }  },
       // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+
+      // Rutas que necesitan role administrador
+      { path: 'users', canActivate: [AdminGuard], component: UsersComponent, data:{ title: 'Users App maintenance' }  },
     ],
   },
 ];

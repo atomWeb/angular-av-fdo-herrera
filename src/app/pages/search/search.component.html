@@ -1,0 +1,88 @@
+<div class="row animated fadeIn fast">
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h3>Users</h3>
+        <div class="alert alert-info" *ngIf="users.length === 0">
+          <p class="mb-0">No users found for imput term</p>
+        </div>
+        <div class="table-responsive" *ngIf="users.length > 0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Avatar</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users" class="animated fadeIn fast">
+                <td>
+                  <img [src]="user.image | image: 'users'" alt="user avatar" class="w65">
+                </td>
+                <td>{{ user.username }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h3>Doctors</h3>
+        <div class="alert alert-info" *ngIf="doctors.length === 0">
+          <p class="mb-0">No doctors found for imput term</p>
+        </div>
+        <div class="table-responsive" *ngIf="doctors.length > 0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Avatar</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let doctor of doctors" (click)="openDoctor(doctor)" class="cursor animated fadeIn fast">
+                <td>
+                  <img [src]="doctor.image | image: 'doctors'" alt="doctor avatar" class="w65">
+                </td>
+                <td>{{ doctor.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h3>Hospitals</h3>
+        <div class="alert alert-info" *ngIf="hospitals.length === 0">
+          <p class="mb-0">No hospitals found for imput term</p>
+        </div>
+        <div class="table-responsive" *ngIf="hospitals.length > 0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Avatar</th>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let hospital of hospitals" class="animated fadeIn fast">
+                <td>
+                  <img [src]="hospital.image | image: 'hospitals'" alt="hospital avatar" class="w65">
+                </td>
+                <td>{{ hospital.name }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
